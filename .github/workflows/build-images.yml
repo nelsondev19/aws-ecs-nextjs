@@ -8,7 +8,8 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   IMAGE_DOCKER_NAME: ${{ secrets.IMAGE_DOCKER_NAME }}
 
-build:
+jobs:
+  build:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
