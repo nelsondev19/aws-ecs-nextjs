@@ -1,0 +1,29 @@
+name: Docker build & push Docker Hub
+
+on:
+  push:
+    branches: [master]
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  IMAGE_DOCKER_NAME: ${{ secrets.IMAGE_DOCKER_NAME }}
+
+build:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - name: Docker Login
+      run: docker login -u ${{ env.DOCKER_USER }} -p ${{ env.DOCKER_PASSWORD }}
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ env.DOCKER_USER }}/docker-app:${{ github.sha }}
+
+    - name: Set image id from the last build
+      run: |
+        IMAGE_ID=$(docker images | grep ${{ env.DOCKER_USER }}\/${{ env.IMAGE_DOCKER_NAME }} | awk '{print $3}')
+        docker tag $IMAGE_ID ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:latest
+
+    - name: Docker Push
+      run: |
+        docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:${{ github.sha }}
+        docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:latest
