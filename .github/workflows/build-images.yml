@@ -17,7 +17,7 @@ jobs:
         run: docker login -u ${{ env.DOCKER_USER }} -p ${{ env.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ env.DOCKER_USER }}/docker-app:${{ github.sha }}
+        run: docker build ./frontend --file Dockerfile --tag ${{ env.DOCKER_USER }}/docker-app:${{ github.sha }}
 
       - name: Set image id from the last build
         run: |
