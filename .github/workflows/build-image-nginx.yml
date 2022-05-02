@@ -28,8 +28,9 @@ jobs:
         run: |
           docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:${{ github.sha }}
           docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:latest
-  build:
+  upload-ecs:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v2
       - name: Upload service to ECS
