@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Upload service to ECS
         run: |
-          aws ecs register-task-definition --cli-input-json task-definition.json
+          aws ecs register-task-definition --cli-input-json file://task-definition.json
           aws ecs create-service \
           --cluster my-first-cluster \
           --service-name nginx-service \
