@@ -8,10 +8,10 @@ COPY . /app
 
 RUN npm i -g serve
 
-RUN npm install
+RUN npm install --production
 
 RUN npm run build
 
 EXPOSE 5000
 
-CMD ["serve", "-s", "dist"]
+CMD ["serve", "-s", "dist", "-p", "5000"]

@@ -1,50 +1,32 @@
 {
-    "containerDefinitions": [
-      {
-        "name": "nginx",
-        "image": "docker.io/nelsoncode/mynginx:latest",
-        "memory": 256,
-        "cpu": 256,
-        "essential": true,
-        "portMappings": [
-          {
-            "containerPort": 80,
-            "protocol": "tcp"
-          }
-        ],
-        "links": [
-          "app"
-        ]
-      },
-      {
-        "name": "app",
-        "image": "docker.io/nelsoncode/nextjs-app:latest",
-        "memory": 256,
-        "cpu": 256,
-        "essential": true
-      },
-      {
-        "name": "nginx-prometheus-exporter",
-        "image": "docker.io/nginx/nginx-prometheus-exporter:0.8.0",
-        "memory": 256,
-        "cpu": 256,
-        "essential": true,
-        "command": [
-          "-nginx.scrape-uri",
-          "http://nginx:8080/stub_status"
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "nelsoncode/mynginx:latest",
+      "memory": 256,
+      "cpu": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
       ],
-      "links":[
-        "nginx"
-      ],
-        "portMappings":[
-          {
-            "containerPort": 9113,
-            "protocol": "tcp"
-          }
-        ]
-      }
-    ],
-    "networkMode": "bridge",
-    "placementConstraints": [],
-    "family": "nginx-sample-stack"
-  }
+      "links": ["app"]
+    },
+    {
+      "name": "app",
+      "image": "nelsoncode/nextjs-app:latest",
+      "memory": 256,
+      "cpu": 256,
+      "portMappings": [
+        {
+          "containerPort": 5000
+        }
+      ]
+    }
+  ],
+  "networkMode": "bridge",
+  "placementConstraints": [],
+  "family": "nginx-sample-stack"
+}
