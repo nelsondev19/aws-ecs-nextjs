@@ -8,7 +8,7 @@ COPY . /app
 
 RUN npm i -g serve
 
-RUN npm install --production
+RUN npm install
 
 RUN npm run build
 
