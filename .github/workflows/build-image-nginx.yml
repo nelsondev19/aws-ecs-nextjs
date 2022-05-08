@@ -28,3 +28,20 @@ jobs:
         run: |
           docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:${{ github.sha }}
           docker push ${{ env.DOCKER_USER }}/${{ env.IMAGE_DOCKER_NAME }}:latest
+  upload-ecs:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Upload service to ECS
+        run: |
+          aws ecs register-task-definition --cli-input-json file://task-definition.json
+          aws ecs create-service \
+          --cluster my-first-cluster \
+          --service-name nginx-service \
+          --task-definition nginx-sample-stack:1 \
+          --desired-count 1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'
