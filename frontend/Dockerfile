@@ -1,16 +1,12 @@
-
-  
 FROM node:14
 
 WORKDIR /app
 
-COPY . /app
+COPY ./dist /app
 
 RUN npm i -g serve
 
-RUN npm install
-
-RUN npm run build
+RUN npm install --production
 
 EXPOSE 5000
 
